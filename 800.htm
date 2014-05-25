@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>NeoPixel Controller</title>
+                
+                
+                <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+                   <link rel="stylesheet" href="//maxskye.com/rgb.min.css" />
+                    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+                    <script src="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+                    
+                    <!--
+                     <link rel="stylesheet" href="/jquery.mobile-1.4.2.min.css" />
+                     <link rel="stylesheet" href="/rgb.css" />
+                     <script src="/jquery-1.10.2.min.js" type="text/javascript"></script>
+                     <script src="/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
+                     -->
+                    <style type=text/css>
+                        /*
+                         @media all and (min-width: 200px) {
+                         .my-breakpoint.ui-grid-a .ui-block-a { width: 50%; }
+                         .my-breakpoint.ui-grid-a .ui-block-b {width: 50%; }
+                         input.ui-slider-input {
+                         font-size: 14px;}
+                         #bright {
+                         width: 50px;
+                         }
+                         #red {
+                         width: 50px;
+                         }
+                         #green {
+                         width: 50px;
+                         }
+                         #blue {
+                         width: 50px;
+                         }
+                         }
+                         
+                         */
+                    
+                    .ui-btn-text {
+                        font-size : 12px;
+                    }
+                    .ui-mini {
+                        font-size: 12px;
+                    }
+                    
+                    input.ui-slider-input {
+                        font-size: 10px;
+                    }
+                    .ui-mobile label {
+                        font-size: 12px;
+                    }
+                    /* button.ui-btn-inline {
+                        width: 100px;
+                        height: 60px;
+                    } */
+                    
+                    button.ui-btn {
+                        
+                    }
+                    .controlgroup-textinput{
+                        padding-top:.22em;
+                        padding-bottom:.22em;
+                    }
+                    
+                    #ontofftwrapper {
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        margin-top: 10px;
+                        font-size: 12px;
+                    }
+                   
+                    #settingswrapper {
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        margin-top: 10px;
+                        font-size: 12px;
+                    }
+                    .ui-input-text {
+                        
+                    }
+                    .ui-slider-track {
+                        margin: 0 15px 0 40px;
+                    }
+                    #swatchwrapper {
+                        
+                        margin-top: 5px;
+                        overflow: auto;
+                    }
+                    
+                    #swatch {
+                        height: 60px;
+                        border: 1px solid black;
+                        background-image: none;
+                        width: 75%;
+                    }
+                    #defaultcolorswatchlabel {
+                        font-size:12px;
+                        height:75%;
+                        width:75%;
+                        margin-top:auto;
+                        margin-bottom:auto;
+                        margin:0 auto;
+                    }
+                    #swatchlabel {
+                        font-size:12px;
+                        height:75%;
+                        width:75%;
+                        margin-top:auto;
+                        margin-bottom:auto;
+                        margin:0 auto;
+                    }
+                    #defaultswatch {
+                        height: 60px;
+                        border: 1px solid black;
+                        background-image: none;
+                        width: 75%;
+                    }
+                    #colorconfigbuttonswrapper {
+                        margin-top: 10px;
+                        
+                    }
+                    #onoffbuttonswrapper {
+                        float: right;
+                        margin-right:60px;
+                        
+                    }
+                    #menu-icon {
+                    }
+                    #defaultsmenu {
+                        overflow: visible; /* Let menu content overflow outside the header */
+                    }
+                    #defaultsmenu ul { /* Menu Name */
+                        margin-top: 0px;
+                    }
+                    #defaultsmenu .ui-btn-corner-all {
+                        border-radius: 0; /* Make the menu button squarish */
+                    }
+                    #defaultsmenu ul ul { /* Menu Item List */
+                        position: absolute; /* Position absolutely */
+                        display: none; /* Hide */
+                        z-index:500; /* Ensure visibility over other elements on page */
+                        margin-top: -5px; /* Bring menu closer to button; not needed on mobile */
+                        margin-right: 0px;
+                    }
+                    #defaultsmenu ul ul li {
+                        width: 150px; /* Fixed width menu items*/
+                        display: block; /* JQM makes a inline-blocks... reset it to block */
+                    }
+                    #defaultsmenu ul ul li a {
+                        white-space: normal; /* Stop long menu names from truncating */
+                    }
+                    #defaultsmenu ul:hover ul {
+                        /*   display: block; /* Display menu on hover over parent */
+                    }
+                    #menu-left {
+                        margin-left: 30px;
+                        float:none
+                    }
+                    #menu-left ul {
+                        margin-left: .3px;
+                    }
+                    
+                        </style>
+                    
+                    </head>
+    <body>
+        <div data-role="page" id="pageone">
+            <div data-role="tabs">
+                <div data-role="navbar" data-iconpos="left" style="margin-right:3px">
+                    <ul>
+                        <li><a style="border-top-left-radius: 5px; border-bottom-left-radius: 5px;" data-icon="star" href="#lightconfig"class="ui-btn-active" data-ajax="false">Lights</a></li>
+                        <li><a href="#timeconfig" data-icon="clock" data-ajax="false">Timers</a></li>
+                        <li><a style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right-width:1px"href="#sysconfig" data-icon="gear" data-ajax="false">Settings</a></li>
+                    </ul>
+                </div>
+                <div id="lightconfig">
+                    <div data-role="tabs">
+                        <div data-role="navbar" style="margin-left: 20px; margin-right: 20px;">
+                            <ul>
+                                <li><a style="border-top-left-radius: 5px; border-bottom-left-radius: 5px;" href="#colorconfig" class="ui-mini ui-btn-active"data-ajax="false">Colors</a></li>
+                                <li><a style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right-width: 1px" href="#patternconfig" class="ui-mini" data-ajax="false">Patterns</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div role="main">
+                            <div id="colorconfig" class="tabContent">
+                                <fieldset id="colormenu" class="ui-grid-a">
+                                    
+                                    <div class="ui-block-a">
+                                        <div>
+                                            <div id="defaultsmenu">
+                                                <ul id="menu-left" data-role="menu" style="padding-left: 0px;">
+                                                    <!-- <ul id="menu-left" data-role="menu"> -->
+                                                    <div>
+                                                        <span style="border-radius: 5px; height: 30px; width: 38px; margin-top: 13px; border-top-width: 1px; border-bottom-width: 1px; margin-bottom: 5px;" id="menu-icon" class="ui-nodisc-icon ui-alt-icon ui-btn ui-icon-bars ui-btn-icon-notext ui-shadow;"></span>
+                                                        <ul data-role="listview" data-inset="true">
+                                                            
+                                                            <!-- <button class="ui-btn  ui-corner-all ui-mini ui-btn-inline" type="buttonA" onclick="updatecolor()">Apply Colors</button> -->
+                                                            
+                                                            <li><a class="ui-mini ui-btn" onclick="returnCurrentColorDefault()">Return To Default Color</a></li>
+                                                            
+                                                            
+                                                            <li><a class="ui-mini ui-btn" onclick="returnCurrentBrightDefault()">Return To Default Brightness</a></li>
+                                                            
+                                                            <!-- <button class="ui-btn ui-corner-all ui-mini ui-btn-inline" type="buttonB" onclick="updatebright()">Apply Brightness</button> -->
+                                                            
+                                                            <li><a class="ui-mini ui-btn" onclick="colorPop()">Set Current Color as Default</a></li>
+                                                            <div data-role="popup" id="colorpopup" class="ui-content">
+                                                                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                                                <p>Are you sure you want to<br>set a new default color?</p>
+                                                                <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="setCurrentColorDefault()" <a href="#"></a>Set Color</button></div>
+                                                            
+                                                            <li><a class="ui-mini ui-btn" onclick="brightPop()">Set Current Brightness as Default</a></li>
+                                                            <div data-role="popup" id="brightpopup" class="ui-content">
+                                                                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                                                <p>Are you sure you want to<br>set a new default brightness?</p>
+                                                                <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="setCurrentBrightDefault()" <a href="#"></a>Set Brightness</button></div>
+                                                        </ul>
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <div id="onoffbuttonswrapper" style="margin-bottom: 0px; border-bottom-width: 0px; margin-top: 5px; width:60px;">
+                                            <input type="checkbox" id="onoffswitch" data-role="flipswitch">
+                                                </div>
+                                    </div>
+                                </fieldset>
+                                
+                                
+                                <div id="sliderswrapper">
+                                    <form method="post" action="currentred()"  style="border: 0;padding-top: 0px;padding-right: 0px;" class="ui-body ui-body-d">
+                                        <input style="background-color: #ffffff; width: 30px;" name="red" id="red" data-highlight="true" min="0" max="255" value="50" type= "range" animage="true">
+                                            </form>
+                                    <form method="post" action="currentgreen()" style="border: 0;padding-right: 0px;" class="ui-body ui-body-e">
+                                        <input style="background-color: #ffffff; width: 30px;" name="green" id="green" data-highlight="true" min="0" max="255" value="50" type="range" animage="true">
+                                            </form>
+                                    <form method="post" action="currentblue()" style="border: 0;padding-right: 0px;" class="ui-body ui-body-f">
+                                        <input style="background-color: #ffffff; width: 30px;" name="blue" id="blue" data-highlight="true" min="0" max="255" value="50" type="range" animage="true">
+                                            </form>
+                                    <form method="post" action="currentbright()" style="border: 0;padding-right: 0px;" class="ui-body ui-body-g">
+                                        <input style="background-color: #ffffff; width: 30px;"name="bright" id="bright" data-highlight="true" min="0" max="255" value="50" type="range" animage="true">
+                                            </form>
+                                </div>
+                                
+                                <div id="swatchwrapper" class="ui-grid-a">
+                                    <div class="ui-block-a">
+                                        <div style="margin:0 auto; border-radius: 5px"class="ui-corner-all" id="swatch"><label id="swatchlabel">Current Color</label> </div>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <div style="margin:0 auto; border-radius: 5px" class="ui-corner-all" id="defaultswatch"><label id="defaultcolorswatchlabel">Default Color</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="patternconfig" class="tabContent">
+                            <span>Hello</span>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div id="timeconfig" class="tabContent">
+                    <div id="ontofftwrapper">
+                        
+
+                        <div>
+                            <h2>Set Time to Turn On and Off:</h2>
+                            <div style="width: 75%; margin-left:2%;">
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a">
+                                        <div style="with:60px;margin:0 auto;">
+                                            <label style="margin:0 auto;font-weight: bold" id="onTlabel">Current On Time: </label> <span id="onTvalue" style=" margin-left: 5px;" type="text">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <div style="margin:0 auto;">
+                                            <label style="margin:0 auto;font-weight: bold" id="offTlabel">Current Off Time: </label>
+                                            <span id="offTvalue" style=" margin-left: 5px;" type="text">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="width: 25%; margin-left:2%;">
+                            <input type="text" id="onT" placeholder="On Time" action="onTTextPop()">
+                        
+                        <button class="ui-mini ui-btn-inline ui-btn ui-corner-all ui-shadow" onclick="onTTextPop()">On Time</button>
+                        
+                                <div data-role="popup" id="onTpopup" class="ui-content">
+                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                    <p>Are you sure you want to<br>set a new time to turn on?</p>
+                                    <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="onTText()" <a href="#"></a>Set Time</button></div>
+                                <input type="text" value="" id="offT" placeholder="Off Time" action="offTTextPop()">
+                                    <button class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow" onclick="offTTextPop()">Off Time</button>
+                                    <div data-role="popup" id="offTpopup" class="ui-content">
+                                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                        <p>Are you sure you want to<br>set a new time to turn off?</p>
+                                        <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="offTText()" <a href="#"></a>Set Time</button></div>
+                                    </div>
+                    </div>
+                </div>
+                
+                <div id="sysconfig" class="tabContent">
+                    <div id="settingswrapper">
+                    <div id="systemconfig">
+                        <div data-role="tabs">
+                            <div data-role="navbar" style="margin-left: 20px; margin-right: 20px;">
+                                <ul>
+                                    <li><a style="border-top-left-radius: 5px; border-bottom-left-radius: 5px;" href="#currentSet" class="ui-mini ui-btn-active"data-ajax="false">Current Info</a></li>
+                                    <li><a style="border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-right-width: 1px" href="#Setconfig" class="ui-mini" data-ajax="false">Change Settings</a></li>
+                                </ul>
+                            </div>
+                    <div role="main">
+                    <div id="currentSet" class="tabContent">
+                            <h2>Current Device Info:</h2>
+                            <div style="margin-left:2%;">
+                                <div class="ui-grid-a">
+                                    <div class="ui-block-a">
+                                        <div style="width 60px, margin-left:2%">
+                                            <label style="font-weight: bold" id="currenttimelabel">Current Time:</label>
+                                            <span id="ctime" type="text" style="margin-left:3px">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <label style="font-weight: bold; margin-left:20%" id="currentdatelabel">Current Date:</label>
+                                        <span id="cdate" type="text" style="margin-left:20%">0</span>
+                                    </div>
+                                    <div class="ui-block-a">
+                                        <label style="font-weight: bold" id="currenttemplabel">Current Temp:</label>
+                                        <span id="devicetemp" type="text" style="margin-left:3px">0</span>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <label style="font-weight: bold; margin-left:20%" id = "boottimelabel">Boot-time:</label>
+                                        <span id = "boottime" type="text" style="margin-left:20%">0</span>
+                                    </div>
+                                    <div class="ui-block-a">
+                                        <label style="font-weight: bold" id="currentramlabel">Current Free RAM:</label>
+                                        <span id="deviceram" type="text" style="margin-left:3px">0</span>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <label style="font-weight: bold; margin-left:20%" id = "fwversionlabel">FW Version:</label>
+                                        <span id = "fwversion" type="text" style="margin-left:15%">0</span>
+                                    </div>
+                                    <div class="ui-block-a">
+                                        <label style="font-weight: bold" id="swversionlabel">Software Version:</label>
+                                        <span id="swversion" type="text" style="margin-left:3px">v10</span>
+                                    </div>
+                                    <div class="ui-block-b">
+                                        <label style="font-weight: bold; margin-left:20%" id="urllabel">Device URL:</label>
+                                        <span id="deviceurl" type="text" style="margin-left:15%">0</span>
+                                    </div>
+                                    <p class="ui-block-a" style="float: none;">
+                                    </p>
+                                    <p class="ui-block-b" style="float: none;">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                        
+                        <!--   <div id="grid9" style="margin-right: 5px;">
+                         <form method="post" action="saveurl()">
+                         <input type="text" value="" id="urlValue" placeholder="Input URL">
+                         </form>
+                         <button class="ui-btn ui-mini ui-btn-inline ui-corners-all" type="buttonURL" onclick="saveurl()">Apply URL</button>
+                         </div>
+                         <div id="grid10" style="margin-right: 5px;"> -->
+                        <div id="Setconfig" class="tabContent">
+                            <h2>Enable / Disable popups:</h2>
+                            <form method="post" action="checkBox()">
+                                <div style="margin-left: 2%; width: 50%" data-role="controlgroup" class="ui-mini">
+                                    <input type="checkbox" name="colorcheckbox" id="colorcheckbox" value="color" class="custom ui-btn-inline" />
+                                    <label for="colorcheckbox">Set Default Color or Brightness</label>
+                                    <input type="checkbox" name="timecheckbox" id="timecheckbox" value="time" class="custom ui-btn-inline" />
+                                    <label for="timecheckbox">Set On Time or Off Time</label>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                        </p>
+                        </p>
+                        </div>
+                        </div>
+                        <div>
+                            <h2> Reset the System: </h2>
+                            <div style="margin-left:2%; width: 75%">
+                                <a href="#resetpopup" data-role="button" data-rel="popup" style="margin-left:auto; margin-right:auto" data-position-to="window" data-transition="fade" class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow">Reset System</a>
+                                
+                                <div data-role="popup" id="resetpopup" class="ui-content">
+                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                    <p>Are you sure you want to<br>reset the system?</p>
+                                    <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="resetbutton()" <a href="#"></a>Reset System </button>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                   
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </body>
+    
+    <script type="text/javascript">
+        
+        $('body').bind('hideOpenMenus', function(){
+                       $("ul:jqmData(role='menu')").find('div > ul').hide();
+                       });
+                       var menuHandler = function(e) {
+                           $('body').trigger('hideOpenMenus');
+                           $(this).find('div > ul').show();
+                           e.stopPropagation();
+                       };
+    $("ul:jqmData(role='menu') div > ul li").click(function(e) {
+                                                   $('body').trigger('hideOpenMenus');
+                                                   e.stopPropagation();
+                                                   });
+                                                   $('body').delegate("ul:jqmData(role='menu')",'click',menuHandler);
+                                                   $('body').click(function(e){
+                                                                   $('body').trigger('hideOpenMenus');
+                                                                   });
+                                                                   
+                                                                   
+                                                                   $.ajaxSetup({
+                                                                               type : 'get',
+                                                                               async : false,
+                                                                               });
+                                                                               window.currentcolor;
+                                                                               window.colorred;
+                                                                               window.colorgreen;
+                                                                               window.colorblue;
+                                                                               window.defaultcolor;
+                                                                               window.currentbright;
+                                                                               window.defaultbrightness;
+                                                                               window.lastcurrentbright = 0;
+                                                                               window.lastcurrentcolor = 0;
+                                                                               window.lastonttxt = 0;
+                                                                               window.lastoffttxt = 0;
+                                                                               window.lastdefaultcolor = 0;
+                                                                               window.counter = 0;
+                                                                               window.getcolorcounter = 0;
+                                                                               window.timeoutID;
+                                                                               window.timepopenable = true;
+                                                                               window.colorpopenable = true;
+                                                                               window.lastcolorcheck = 0;
+                                                                               window.lasttimecheck = 0;
+                                                                               
+                                                                               window.URL = "localhost";
+                                                                               //window.URL = "bench.local:9090";
+                                                                               
+                                                                               function updatesliders(){
+                                                                                   if (window.currentcolor != window.lastcurrentcolor){
+                                                                                       $("#red").val(window.colorred).slider("refresh");
+                                                                                       console.log("slider - red:" + window.colorred)
+                                                                                       $("#green").val(window.colorgreen).slider("refresh");
+                                                                                       console.log("slider - green: " + window.colorgreen)
+                                                                                       $("#blue").val(window.colorblue).slider("refresh");
+                                                                                       console.log("slider - blue: " + window.colorblue);
+                                                                                       window.lastcurrentcolor = window.curentcolor;
+                                                                                   }
+                                                                               };
+    
+    function refreshSwatch() {
+        var Swatchred = $("#red").val(), Swatchgreen = $("#green").val(),
+        Swatchblue = $("#blue").val(),
+        Sbright = $("#bright").val();
+        window.currentcolor = Swatchred + "," + Swatchgreen + "," + Swatchblue;
+        window.currentbright = Sbright;
+        $("#swatch").css("background-color",
+                         "rgb(" + Swatchred + "," + Swatchgreen + ","+ Swatchblue + ")");
+    }
+    function refreshdefaultcolorSwatch() {
+        var defaultcolorString = defaultcolor.split(",");
+        var rgbval = "rgb(" + defaultcolorString[0] + ","
+        + defaultcolorString[1] + "," + defaultcolorString[2] + ")";
+        $("#defaultswatch").css("background-color",
+                                "rgb(" + defaultcolorString[0] + "," + defaultcolorString[1]+ "," + defaultcolorString[2] + ")");
+                                console.log("setting default color swatch to: " + rgbval);
+    };
+    
+    function getcurrentcolor() {
+        $.ajax({
+               url : "/2",
+               async : false,
+               success : function(data) {
+               window.currentcolor = $.trim(data);
+               var currentcolorString = currentcolor.split(",");
+               window.colorred = currentcolorString[0];
+               window.colorgreen = currentcolorString[1];
+               window.colorblue = currentcolorString[2];
+               console.log("current color:" + currentcolor);
+               updatesliders()
+               }
+               });
+    };
+    
+    function getcurrentbrightness() {
+        $.ajax({
+               url : "/7",
+               async : false,
+               success : function(data) {
+               window.brightness = $.trim(data)
+               console.log("current brightness: " + window.brightness);
+               }
+               });
+    };
+    
+    function getdefaultcolor() {
+        $.ajax({
+               url : "/4",
+               async : false,
+               success : function(data) {
+               window.defaultcolor = $.trim(data)
+               console.log("defaultcolor = " + window.defaultcolor);
+               }
+               });
+               refreshdefaultcolorSwatch();
+    };
+    
+    function getdefaultbrightness() {
+        $.ajax({
+               url : "/9",
+               async : false,
+               success : function(data) {
+               window.defaultbrightness = $.trim(data)
+               console.log("defaultbrightness = " + window.defaultbrightness);
+               }
+               });
+    };
+    
+    function updatetime() {
+        $.ajax({
+               url : "/105",
+               async : false,
+               success : function(data) {
+               $("#ctime").text(data);
+               }
+               });
+    }
+    
+    function updatedate() {
+        $.ajax({
+               url : "/106",
+               async : false,
+               success : function(data) {
+               $("#cdate").text(data);
+               }
+               });
+    }
+    
+    function updatetemp() {
+        $.ajax({
+               url : "/104",
+               async : false,
+               success : function(data) {
+               $("#devicetemp").text(data);
+               }
+               });
+    }
+    
+    function updateram() {
+        $.ajax({
+               url : "/109",
+               async : false,
+               success : function(data) {
+               $("#deviceram").text(data);
+               }
+               });
+    }
+    function getfwversion() {
+        $.ajax({
+               url : "/108",
+               async : false,
+               success : function(data) {
+               $("#fwversion").text(data);
+               }
+               });
+    }
+    function getboottime() {
+        $.ajax({
+               url : "/107",
+               async : false,
+               success : function(data) {
+               $("#boottime").text(data);
+               }
+               });
+    }
+    
+    function returnCurrentColorDefault() {
+        var defaultcolorString = defaultcolor.split(",");
+        defred = defaultcolorString[0];
+        console.log("default red:" + defred);
+        defgreen = defaultcolorString[1];
+        console.log("default green: " + defgreen);
+        defblue = defaultcolorString[2];
+        console.log("default blue: " + defblue);
+        $("#red").val(defred).slider("refresh");
+        $("#green").val(defgreen).slider("refresh");
+        $("#blue").val(defblue).slider("refresh");
+    }
+    function colorPop() {
+        if(window.colorpopenable == true) {
+            $( "#colorpopup" ).popup( "open" );
+        }
+        if(window.colorpopenable == false) {
+            setCurrentColorDefault();
+        }
+    }
+    function setCurrentColorDefault() {
+        $( "#colorpopup" ).popup( "close" );
+        var Setdefred = $("#red").val(), Setdefgreen = $("#green").val(),
+        Setdefblue = $("#blue").val(),
+        setccdefurl = Setdefred+ "," + Setdefgreen + "," + Setdefblue;
+        getdefaultcolor();
+        if (setccdefurl != window.defaultcolor) {
+            $.ajax({
+                   url : "/3",
+                   async : false,
+                   success : function() {
+                   console.log("color default set");
+                   getdefaultcolor();
+                   }
+                   });
+        }
+    }
+    function returnCurrentBrightDefault() {
+        $("#bright").val(defaultbrightness).slider("refresh");
+        
+    }
+    function brightPop() {
+        if(window.colorpopenable == true) {
+            $( "#brightpopup" ).popup( "open" );
+        }
+        if(window.colorpopenable == false) {
+            setCurrentBrightDefault();
+        }
+    }
+    function setCurrentBrightDefault() {
+        $( "#brightpopup" ).popup( "close" );
+        var Setdefbright = $("#bright").val();
+        setcbdefurl = "8," + Setdefbright;
+        //if (Setdefbright != window.defaultbrightness) {
+        $.ajax({
+               url : "/8," + Setdefbright,
+               async : false,
+               success : function() {
+               console.log("brightness default set");
+               getdefaultbrightness();
+               }
+               });
+               //}
+    }
+    function onTTextPop() {
+        if(window.timepopenable == true) {
+            $( "#onTpopup" ).popup( "open" );
+        }
+        if(window.timepopenable == false) {
+            onTText();
+        }
+    }
+    function onTText() {
+        if(timepopenable == true) {
+            $( "#onTpopup" ).popup( "close" );
+        };
+        var onttxt = $("#onT").val();
+        console.log("onttxt = " + onttxt);
+        var onttxtString = onttxt.split(":");
+        console.log("set ont =" + onttxtString[0] + "," + onttxtString[1]);
+        $("#onT").val("");
+        if (onttxt != window.lastonttxt) {
+            $.ajax({
+                   url : "/100," + onttxtString[0] + ","+ onttxtString[1],
+                   async : false,
+                   success : function(data) {
+                   currentonT();
+                   console.log("set on time")
+                   window.lastonttxt = onttxt;
+                   }
+                   });
+        }
+    }
+    function offTTextPop() {
+        if(window.timepopenable == true) {
+            $( "#offTpopup" ).popup( "open" );
+        }
+        if(window.timepopenable == false) {
+            offTText();
+        }
+    }
+    function offTText() {
+        if(timepopenable == true) {
+            $( "#offTpopup" ).popup( "close" );
+        };
+        var offttxt = $("#offT").val();
+        var offttxtString = offttxt.split(":");
+        console.log("set offt =" + offttxtString[0] + "," + offttxtString[1]);
+        $("#offT").val("");
+        if (offttxt != window.lastoffttxt) {
+            $.ajax({
+                   url : "/102," + offttxtString[0] + ","+ offttxtString[1],
+                   async : false,
+                   success : function(data) {
+                   currentoffT();
+                   console.log("set off time")
+                   window.lastoffttxt = offttxt;
+                   }
+                   });
+        }
+    }
+    function currentonT() {
+        $.ajax({
+               url : "/101",
+               async : false,
+               success : function(data) {
+               var currentonTvalue = $.trim(data)
+               $("#onTvalue").text($.trim(data));
+               console.log("currentonTvalue = " + $("#onTvalue").text());
+               }
+               });
+    }
+    function currentoffT() {
+        $.ajax({
+               url : "/103",
+               async : false,
+               success : function(data) {
+               var currentoffTvalue = $.trim(data)
+               $("#offTvalue").text(currentoffTvalue);
+               console.log("currentoffTvalue = " + currentoffTvalue);
+               }
+               });
+    }
+    function saveurl() {
+        var urltxt = ","+"0"+","+"0"+","+"0"+","+$("#urlValue").val();+"\\n"
+        if (urltxt != window.URL) {
+            $.ajax({
+                   url : "http://" + window.URL + "/110"+urltxt,
+                   async : false,
+                   dataType: "json",
+                   success : function(data) {
+                   
+                   console.log(data);
+                   console.log(urltxt);
+                   $("#urlValue").val("")
+                   geturl();
+                   }
+                   });
+        }
+    }
+    function geturl() {
+        $.ajax({
+               url : "/" + "111",
+               async : false,
+               dataType : "json",
+               success : function(data) {
+               window.URL = data;
+               $("#deviceurl").text(window.URL);
+               console.log("URL is: " + URL)
+               }
+               });
+    }
+    function resetbutton() {
+        $.ajax({
+               url : "/999",
+               async : false,
+               success : function() {
+               console.log("System Reset!");
+               $( "#resetpopup" ).popup( "close" );
+               }
+               });
+    }
+    function updatecolor() {
+        if (window.currentcolor != window.lastcurrentcolor) {
+            $.ajax({
+                   url : "/1," + window.currentcolor,
+                   async : false,
+                   success : function() {
+                   window.lastcurrentcolor = window.currentcolor;
+                   $.mobile.loading( "hide" );
+                   console.log("colors updated");
+                   console.log(window.currentcolor);
+                   window.clearTimeout(window.timeoutID);
+                   }
+                   });
+        }
+    }
+    function updatebright() {
+        if (window.currentbright != window.lastcurrentbright) {
+            $.ajax({
+                   url : "/6," + window.currentbright,
+                   async : false,
+                   success : function() {
+                   window.lastcurrentbright = window.currentbright;
+                   console.log("brightness updated")
+                   }
+                   });
+        }
+    }
+    function ledoff() {
+        $.ajax({
+               url : "/11",
+               async : false,
+               success : function() {
+               console.log("LEDs are off")
+               }
+               });
+    }
+    function gettimepopcheck() {
+        $.ajax({
+               url : "/113",
+               async : false,
+               success : function(data) {
+               console.log("Getting timepopcheck")
+               if(data == '1'){
+               $("input#timecheckbox").attr ("checked", "checked");
+               window.timepopenable = true;
+               console.log("timepopenable = ");
+               console.log(window.timepopenable)
+               }
+               if(data == '0'){
+               $("input#timecheckbox").attr ("checked", "");
+               window.timepopenable = false;
+               console.log("timepopenable = ");
+               console.log(window.timepopenable)
+               }
+               }
+               });
+    }
+    
+    function settimepopcheck() {
+        console.log ($("input#timecheckbox").attr ("checked"));
+        
+        if($("input#timecheckbox").attr ("checked") == "checked") {
+            $.ajax({
+                   url : "/112," + "1",
+                   async : false,
+                   success : function() {
+                   console.log("Setting timepopcheck true")
+                   window.timepopenable = true;
+                   }
+                   });
+        }
+        if($("input#timecheckbox").attr ("checked") == "false") {
+            $.ajax({
+                   url : "/112," + "0",
+                   async : false,
+                   success : function() {
+                   console.log("Setting timepopcheck false")
+                   window.timepopenable = false;
+                   }
+                   });
+        }
+    }
+    function getcolorpopcheck() {
+        $.ajax({
+               url : "/13",
+               async : false,
+               success : function(data) {
+               console.log("Getting colorpopcheck")
+               if(data == '1'){
+               $("input#colorcheckbox").attr ("checked", "checked");
+               window.colorpopenable = true;
+               console.log("colorpopenable = ");
+               console.log(window.colorpopenable)
+               }
+               if(data == '0'){
+               $("input#timecheckbox").attr ("checked", "");
+               window.colorpopenable = false;
+               console.log("colorpopenable = ");
+               console.log(window.colorpopenable)
+               }
+               }
+               });
+    }
+    
+    function setcolorpopcheck() {
+        console.log ($("input#colorcheckbox").attr ("checked"));
+        
+        if($("input#colorcheckbox").attr ("checked") == "checked") {
+            $.ajax({
+                   url : "/12," + "1",
+                   async : false,
+                   success : function() {
+                   console.log("Setting colorpopcheck true")
+                   window.colorpopenable = true;
+                   }
+                   });
+        }
+        if($("input#colorcheckbox").attr ("checked") == "false") {
+            $.ajax({
+                   url : "/12," + "0",
+                   async : false,
+                   success : function() {
+                   console.log("Setting colorpopcheck false")
+                   window.colorpopenable = false;
+                   }
+                   });
+        }
+    }
+    
+    function checkBox() {
+        var cccheck = $("input#colorcheckbox").attr ("checked");
+        console.log("cccheck= ");
+        concole.log(cccheck);
+        if (window.lastcolorcheck != cccheck) {
+            setcolorpopcheck();
+        }
+        var tccheck = $("input#timecheckbox").attr ("checked");
+        console.log("tccheck= ");
+        console.log(tccheck);
+        if (window.lasttimecheck != tccheck) {
+            settimepopcheck();
+        }
+    }
+    
+    $(window).on("orientationchange",function(){
+                 if(window.orientation == 0) // Portrait
+                 {
+                 $("p").css({"font-size":"300%"});
+                 }
+                 else // Landscape
+                 {
+                 $("p").css({"font-size":"200%"});
+                 }
+                 });
+                 
+                 $(window).load(function() {
+                                getcurrentcolor();
+                                getcurrentbrightness();
+                                getdefaultcolor();
+                                getdefaultbrightness();
+                                getfwversion();
+                                getboottime();
+                                refreshdefaultcolorSwatch();
+                                gettimepopcheck();
+                                getcolorpopcheck();
+                                $("#red").val(window.colorred).slider("refresh");
+                                console.log("slider - red:" + window.colorred);
+                                $("#green").val(window.colorgreen).slider("refresh");
+                                console.log("slider - green: " + window.colorgreen);
+                                $("#blue").val(window.colorblue).slider("refresh");
+                                console.log("slider - blue: " + window.colorblue);
+                                $("#bright").val(window.brightness).slider("refresh");
+                                console.log("slider - bright: " + window.brightness);
+                                refreshSwatch();
+                                currentoffT();
+                                currentonT();
+                                //	geturl();
+                                updatetime();
+                                updatedate();
+                                updatetemp();
+                                updateram();
+                                setInterval(updatetemp, 60000);
+                                setInterval(updatedate, 60000);
+                                setInterval(updatetime, 60000);
+                                setInterval(updateram, 60000);
+                                setInterval(getcurrentcolor, 60000);
+                                });
+                                
+                                
+                                $(document).on("pageinit","#pageone",function(){
+                                               $("#red").on('slidestop', function(event) {
+                                                            $.mobile.loading('show');
+                                                            refreshSwatch();
+                                                            updatecolor();
+                                                            });
+                                               $("#green").on('slidestop', function(event) {
+                                                              refreshSwatch();
+                                                              updatecolor();
+                                                              });
+                                               $("#blue").on('slidestop', function(event) {
+                                                             refreshSwatch();
+                                                             updatecolor();
+                                                             });
+                                               $("#bright").on('slidestop', function(event) {
+                                                               window.currentbright = $("#bright").val();
+                                                               updatebright();
+                                                               });
+                                               $('#colorcheckbox').is(':checked');
+                                               });
+                                               $(document).on( "click", ".show-page-loading-msg", function() {
+                                                              setTimeout(function(){
+                                                                         $.mobile.loading('show');
+                                                                         },1);
+                                                              });
+                                                              
+        </script>
+    
+</html>
