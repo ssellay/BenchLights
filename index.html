@@ -7,7 +7,7 @@
                 
                 
                 <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
-                   <link rel="stylesheet" href="//maxskye.com/rgb.min.css" />
+                   <link rel="stylesheet" href="//maxskye.com/dev/lightcontrol/rgb.min.css" />
                     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
                     <script src="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
                     
@@ -455,7 +455,7 @@
                                                                                window.lastcolorcheck = 0;
                                                                                window.lasttimecheck = 0;
                                                                                
-                                                                               window.URL = "localhost";
+                                                                               window.URL = "maxskye.com/dev/lightcontrol";
                                                                                //window.URL = "bench.local:9090";
                                                                                
                                                                                function updatesliders(){
@@ -490,7 +490,7 @@
     
     function getcurrentcolor() {
         $.ajax({
-               url : "/2",
+               url : window.URL + "/2",
                async : false,
                success : function(data) {
                window.currentcolor = $.trim(data);
@@ -506,7 +506,7 @@
     
     function getcurrentbrightness() {
         $.ajax({
-               url : "/7",
+               url : window.URL + "/7",
                async : false,
                success : function(data) {
                window.brightness = $.trim(data)
@@ -517,7 +517,7 @@
     
     function getdefaultcolor() {
         $.ajax({
-               url : "/4",
+               url : window.URL + "/4",
                async : false,
                success : function(data) {
                window.defaultcolor = $.trim(data)
@@ -529,7 +529,7 @@
     
     function getdefaultbrightness() {
         $.ajax({
-               url : "/9",
+               url : window.URL + "/9",
                async : false,
                success : function(data) {
                window.defaultbrightness = $.trim(data)
@@ -540,7 +540,7 @@
     
     function updatetime() {
         $.ajax({
-               url : "/105",
+               url : window.URL + "/105",
                async : false,
                success : function(data) {
                $("#ctime").text(data);
@@ -550,7 +550,7 @@
     
     function updatedate() {
         $.ajax({
-               url : "/106",
+               url : window.URL + "/106",
                async : false,
                success : function(data) {
                $("#cdate").text(data);
@@ -560,7 +560,7 @@
     
     function updatetemp() {
         $.ajax({
-               url : "/104",
+               url : window.URL + "/104",
                async : false,
                success : function(data) {
                $("#devicetemp").text(data);
@@ -570,7 +570,7 @@
     
     function updateram() {
         $.ajax({
-               url : "/109",
+               url : window.URL + "/109",
                async : false,
                success : function(data) {
                $("#deviceram").text(data);
@@ -579,7 +579,7 @@
     }
     function getfwversion() {
         $.ajax({
-               url : "/108",
+               url : window.URL + "/108",
                async : false,
                success : function(data) {
                $("#fwversion").text(data);
@@ -588,7 +588,7 @@
     }
     function getboottime() {
         $.ajax({
-               url : "/107",
+               url : window.URL + "/107",
                async : false,
                success : function(data) {
                $("#boottime").text(data);
@@ -624,7 +624,7 @@
         getdefaultcolor();
         if (setccdefurl != window.defaultcolor) {
             $.ajax({
-                   url : "/3",
+                   url : window.URL + "/3",
                    async : false,
                    success : function() {
                    console.log("color default set");
@@ -651,7 +651,7 @@
         setcbdefurl = "8," + Setdefbright;
         //if (Setdefbright != window.defaultbrightness) {
         $.ajax({
-               url : "/8," + Setdefbright,
+               url : window.URL + "/8," + Setdefbright,
                async : false,
                success : function() {
                console.log("brightness default set");
@@ -679,7 +679,7 @@
         $("#onT").val("");
         if (onttxt != window.lastonttxt) {
             $.ajax({
-                   url : "/100," + onttxtString[0] + ","+ onttxtString[1],
+                   url : window.URL + "/100," + onttxtString[0] + ","+ onttxtString[1],
                    async : false,
                    success : function(data) {
                    currentonT();
@@ -707,7 +707,7 @@
         $("#offT").val("");
         if (offttxt != window.lastoffttxt) {
             $.ajax({
-                   url : "/102," + offttxtString[0] + ","+ offttxtString[1],
+                   url : window.URL + "/102," + offttxtString[0] + ","+ offttxtString[1],
                    async : false,
                    success : function(data) {
                    currentoffT();
@@ -719,7 +719,7 @@
     }
     function currentonT() {
         $.ajax({
-               url : "/101",
+               url : window.URL + "/101",
                async : false,
                success : function(data) {
                var currentonTvalue = $.trim(data)
@@ -730,7 +730,7 @@
     }
     function currentoffT() {
         $.ajax({
-               url : "/103",
+               url : window.URL + "/103",
                async : false,
                success : function(data) {
                var currentoffTvalue = $.trim(data)
@@ -743,7 +743,7 @@
         var urltxt = ","+"0"+","+"0"+","+"0"+","+$("#urlValue").val();+"\\n"
         if (urltxt != window.URL) {
             $.ajax({
-                   url : "http://" + window.URL + "/110"+urltxt,
+                   url : window.URL + "http://" + window.URL + "/110"+urltxt,
                    async : false,
                    dataType: "json",
                    success : function(data) {
@@ -758,7 +758,7 @@
     }
     function geturl() {
         $.ajax({
-               url : "/" + "111",
+               url : window.URL + "/" + "111",
                async : false,
                dataType : "json",
                success : function(data) {
@@ -770,7 +770,7 @@
     }
     function resetbutton() {
         $.ajax({
-               url : "/999",
+               url : window.URL + "/999",
                async : false,
                success : function() {
                console.log("System Reset!");
@@ -781,7 +781,7 @@
     function updatecolor() {
         if (window.currentcolor != window.lastcurrentcolor) {
             $.ajax({
-                   url : "/1," + window.currentcolor,
+                   url : window.URL + "/1," + window.currentcolor,
                    async : false,
                    success : function() {
                    window.lastcurrentcolor = window.currentcolor;
@@ -796,7 +796,7 @@
     function updatebright() {
         if (window.currentbright != window.lastcurrentbright) {
             $.ajax({
-                   url : "/6," + window.currentbright,
+                   url : window.URL + "/6," + window.currentbright,
                    async : false,
                    success : function() {
                    window.lastcurrentbright = window.currentbright;
@@ -807,7 +807,7 @@
     }
     function ledoff() {
         $.ajax({
-               url : "/11",
+               url : window.URL + "/11",
                async : false,
                success : function() {
                console.log("LEDs are off")
@@ -816,7 +816,7 @@
     }
     function gettimepopcheck() {
         $.ajax({
-               url : "/113",
+               url : window.URL + "/113",
                async : false,
                success : function(data) {
                console.log("Getting timepopcheck")
@@ -841,7 +841,7 @@
         
         if($("input#timecheckbox").attr ("checked") == "checked") {
             $.ajax({
-                   url : "/112," + "1",
+                   url : window.URL + "/112," + "1",
                    async : false,
                    success : function() {
                    console.log("Setting timepopcheck true")
@@ -851,7 +851,7 @@
         }
         if($("input#timecheckbox").attr ("checked") == "false") {
             $.ajax({
-                   url : "/112," + "0",
+                   url : window.URL + "/112," + "0",
                    async : false,
                    success : function() {
                    console.log("Setting timepopcheck false")
@@ -862,7 +862,7 @@
     }
     function getcolorpopcheck() {
         $.ajax({
-               url : "/13",
+               url : window.URL + "/13",
                async : false,
                success : function(data) {
                console.log("Getting colorpopcheck")
@@ -887,7 +887,7 @@
         
         if($("input#colorcheckbox").attr ("checked") == "checked") {
             $.ajax({
-                   url : "/12," + "1",
+                   url : window.URL + "/12," + "1",
                    async : false,
                    success : function() {
                    console.log("Setting colorpopcheck true")
@@ -897,7 +897,7 @@
         }
         if($("input#colorcheckbox").attr ("checked") == "false") {
             $.ajax({
-                   url : "/12," + "0",
+                   url : window.URL + "/12," + "0",
                    async : false,
                    success : function() {
                    console.log("Setting colorpopcheck false")
