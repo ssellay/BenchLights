@@ -5,18 +5,18 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
                 <title>NeoPixel Controller</title>
                 
-                
+                <!--
                 <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
                    <link rel="stylesheet" href="//maxskye.com/dev/lightcontrol/rgb.min.css" />
                     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
                     <script src="//code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+                    -->
                     
-                    <!--
-                     <link rel="stylesheet" href="/jquery.mobile-1.4.2.min.css" />
-                     <link rel="stylesheet" href="/rgb.css" />
-                     <script src="/jquery-1.10.2.min.js" type="text/javascript"></script>
-                     <script src="/jquery.mobile-1.4.2.min.js" type="text/javascript"></script>
-                     -->
+                     <link rel="stylesheet" href="/jq/mobile/jquery.mobile-1.4.1.min.css" />
+                     <link rel="stylesheet" href="/rgb.min.css" />
+                     <script src="/jq/jquery-1.10.2.min.js" type="text/javascript"></script>
+                     <script src="/jq/mobile/jquery.mobile-1.4.1.min.js" type="text/javascript"></script>
+                 
                     <style type=text/css>
                         /*
                          @media all and (min-width: 200px) {
@@ -74,6 +74,12 @@
                     }
                    
                     #settingswrapper {
+                        margin-left: 10px;
+                        margin-right: 10px;
+                        margin-top: 10px;
+                        font-size: 12px;
+                    }
+                    #patternswrapper {
                         margin-left: 10px;
                         margin-right: 10px;
                         margin-top: 10px;
@@ -168,7 +174,7 @@
                     
                     </head>
     <body>
-        <div data-role="page" id="pageone">
+        <div data-role="page" id="pageone" style="margin-top:20px">
             <div data-role="tabs">
                 <div data-role="navbar" data-iconpos="left" style="margin-right:3px">
                     <ul>
@@ -258,13 +264,56 @@
                                 </div>
                             </div>
                         </div>
-                        
+                     
                         <div id="patternconfig" class="tabContent">
-                            <span>Hello</span>
+                            <div id="patternswrapper">
+                            <h2>Pattern Configuration</h2>
+                                   <!-- <form> -->
+                                   <div data-role="fieldcontain" class="ui-hide-label">
+                                        <label class="select" for="patternselect">Choose...</label>
+                                        <select id="patternselect" data-mini="true" data-native-menu="true" name="patternselect" style="margin-top:1px">
+                                            <option>Choose...</option>
+                                            <option value="201">Wave</option>
+                                            <option value="202">Chase</option>
+                                            <option value="203">Rainbow</option>
+                                            <option value="204">Sparkle</option>
+                                        </select>
+                                    </div>
+                                    <!-- </form> -->
+                                    <div class="iframe">
+                                        <iframe name="ifrm" id="ifrm" src= "/220.htm" frameborder="0" width="100%" height="500">
+                                            Your browsers doesn't support iframes.
+                                            </iframe>
+                                        </div>
+                            </div>
                         </div>
+                        
+                     <!--
+                         
+                        <div id="patternconfig" class="tabContent">
+                            <div id="patternswrapper">
+                                <h2>Pattern Configuration</h2>
+                                <div id="defaultmenu">
+                                    <ul id="menu=left" data-role="menu" style="padding-left: 0px;">
+                                        <div>
+                                            <span style="border-radius: 5px; height: 15px; width: 120px; margin-top: 13px; border-top-width: 1px; border-bottom-width: 1px; margin-bottom: 5px;" class="ui-nodisc-icon ui-alt-icon ui-btn ui-shadow;">Choose...</span>
+                                    <ul data-role="listview" data-insert="true">
+                                            <li><a class="ui-mini ui-btn" onclick="wave()">Wave</a></li>
+                                            <li><a class="ui-mini ui-btn" onclick="chase()">Chase</a></li>
+                                            <li value="203">Rainbow</li>
+                                            <li value="204">Sparkle</li>
+                                            </ul>
+                                            </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                        
+                        
                     </div>
                 </div>
-                
+
                 
                 <div id="timeconfig" class="tabContent">
                     <div id="ontofftwrapper">
@@ -272,42 +321,47 @@
 
                         <div>
                             <h2>Set Time to Turn On and Off:</h2>
-                            <div style="width: 75%; margin-left:2%;">
-                                <div class="ui-grid-a">
+                            <div style="width 75%; margin-left:2%;">
+                                    <div class="ui-grid-a">
+                                        <div class="ui-block-a">
+                                            <div style="width:110px;">
+                                                <label style="font-weight: bold" id="onTlabel">Current On Time: </label>
+                                                <span id="onTvalue" style="margin-left:10px;" type="text">0</span>
+                                            </div>
+                                        </div>
+                                        <div class="ui-block-b">
+                                            <div style="width:120px;margin-left:10%;">
+                                                <label style="font-weight: bold" id="offTlabel">Current Off Time: </label>
+                                                <span id="offTvalue" style="margin-left:10px;" type="text">0</span>
+                                            </div>
+                                        </div>
                                     <div class="ui-block-a">
-                                        <div style="with:60px;margin:0 auto;">
-                                            <label style="margin:0 auto;font-weight: bold" id="onTlabel">Current On Time: </label> <span id="onTvalue" style=" margin-left: 5px;" type="text">0</span>
+                                        <div style="width:120px;">
+                                            <input type="text" id="onT" placeholder="On Time" action="onTTextPop()">
+                                                <button class="ui-mini ui-btn-inline ui-btn ui-corner-all ui-shadow" onclick="onTTextPop()">On Time</button>
+                                                <div data-role="popup" id="onTpopup" class="ui-content">
+                                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                                    <p>Are you sure you want to<br>set a new time to turn on?</p>
+                                                    <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="onTText()" <a href="#"></a>Set Time</button>
+                                                </div>
                                         </div>
                                     </div>
                                     <div class="ui-block-b">
-                                        <div style="margin:0 auto;">
-                                            <label style="margin:0 auto;font-weight: bold" id="offTlabel">Current Off Time: </label>
-                                            <span id="offTvalue" style=" margin-left: 5px;" type="text">0</span>
+                                        <div style="width: 110px; margin-left:10%;">
+                                            <input type="text" value="" id="offT" placeholder="Off Time" action="offTTextPop()">
+                                                <button class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow" onclick="offTTextPop()">Off Time</button>
+                                                <div data-role="popup" id="offTpopup" class="ui-content">
+                                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                                    <p>Are you sure you want to<br>set a new time to turn off?</p>
+                                                    <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="offTText()" <a href="#"></a>Set Time</button>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div style="width: 25%; margin-left:2%;">
-                            <input type="text" id="onT" placeholder="On Time" action="onTTextPop()">
-                        
-                        <button class="ui-mini ui-btn-inline ui-btn ui-corner-all ui-shadow" onclick="onTTextPop()">On Time</button>
-                        
-                                <div data-role="popup" id="onTpopup" class="ui-content">
-                                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
-                                    <p>Are you sure you want to<br>set a new time to turn on?</p>
-                                    <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="onTText()" <a href="#"></a>Set Time</button></div>
-                                <input type="text" value="" id="offT" placeholder="Off Time" action="offTTextPop()">
-                                    <button class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow" onclick="offTTextPop()">Off Time</button>
-                                    <div data-role="popup" id="offTpopup" class="ui-content">
-                                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
-                                        <p>Are you sure you want to<br>set a new time to turn off?</p>
-                                        <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="offTText()" <a href="#"></a>Set Time</button></div>
-                                    </div>
                     </div>
                 </div>
-                
                 <div id="sysconfig" class="tabContent">
                     <div id="settingswrapper">
                     <div id="systemconfig">
@@ -319,7 +373,7 @@
                                 </ul>
                             </div>
                     <div role="main">
-                    <div id="currentSet" class="tabContent">
+                        <div id="currentSet" class="tabContent">
                             <h2>Current Device Info:</h2>
                             <div style="margin-left:2%;">
                                 <div class="ui-grid-a">
@@ -347,7 +401,7 @@
                                     </div>
                                     <div class="ui-block-b">
                                         <label style="font-weight: bold; margin-left:20%" id = "fwversionlabel">FW Version:</label>
-                                        <span id = "fwversion" type="text" style="margin-left:15%">0</span>
+                                        <span id = "fwversion" type="text" style="margin-left:20%">0</span>
                                     </div>
                                     <div class="ui-block-a">
                                         <label style="font-weight: bold" id="swversionlabel">Software Version:</label>
@@ -355,7 +409,11 @@
                                     </div>
                                     <div class="ui-block-b">
                                         <label style="font-weight: bold; margin-left:20%" id="urllabel">Device URL:</label>
-                                        <span id="deviceurl" type="text" style="margin-left:15%">0</span>
+                                        <span id="deviceurl" type="text" style="margin-left:20%">0</span>
+                                    </div>
+                                    <div class="ui-block-a">
+                                        <label style="font-weight: bold" id="tzlabel">TimeZone Offset:</label>
+                                        <span id="tzoff" type="text" style="margin-left:3px">0</span>
                                     </div>
                                     <p class="ui-block-a" style="float: none;">
                                     </p>
@@ -366,14 +424,7 @@
                         </div>
                     </div>
                  
-                        
-                        <!--   <div id="grid9" style="margin-right: 5px;">
-                         <form method="post" action="saveurl()">
-                         <input type="text" value="" id="urlValue" placeholder="Input URL">
-                         </form>
-                         <button class="ui-btn ui-mini ui-btn-inline ui-corners-all" type="buttonURL" onclick="saveurl()">Apply URL</button>
-                         </div>
-                         <div id="grid10" style="margin-right: 5px;"> -->
+                 
                         <div id="Setconfig" class="tabContent">
                             <h2>Enable / Disable popups:</h2>
                             <form method="post" action="checkBox()">
@@ -384,6 +435,20 @@
                                     <label for="timecheckbox">Set On Time or Off Time</label>
                                     
                                 </div>
+                                <div style="width: 50%; margin-left:2%;">
+                                    <input type="text" id="urlValue"" placeholder="Device URL" action="urlpopup()">
+                                        <a href="#urlpopup" data-role="button" data-rel="popup" style="margin-left:auto; margin-right:auto" data-position-to="window" data-transition="fade" class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow">Save URL</a>
+                                        <div data-role="popup" id="urlpopup" class="ui-content">
+                                            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                                            <p>Are you sure you want to<br>Change the URL?</p>
+                                            <button style="margin-left:auto; margin-right:auto"class="ui-shadow ui-btn ui-mini ui-corner-all" onclick="saveurl()" <a href="#"></a>Save URL </button>
+                                        </div>
+                                        
+                                        </div>
+                                        <div style="width: 50%; margin-left:2%;">
+                                        <input type="text" value="" id="tzoffT" placeholder="TZ offset" action="settzoff()">
+                                        <button class="ui-btn-inline ui-btn ui-mini ui-corner-all ui-shadow" onclick="settzoff()">TZ Offset</button>
+                                        </div>
                             </form>
                         </div>
                         </p>
@@ -409,10 +474,19 @@
                 </div>
             </div>
         </div>
+        <div id="chooseframe">
+        <h2> when a choice is made this will change</h2>
+        </div>
+        <div id="waveframe">
+        <h2> Hello Wave</h2>
+        </div>
+        <div id="chaseframe">
+        <h2>Hello Chase</h2>
+        </div>
     </body>
     
     <script type="text/javascript">
-        
+    
         $('body').bind('hideOpenMenus', function(){
                        $("ul:jqmData(role='menu')").find('div > ul').hide();
                        });
@@ -455,7 +529,8 @@
                                                                                window.lastcolorcheck = 0;
                                                                                window.lasttimecheck = 0;
                                                                                
-                                                                               window.URL = "http://www.maxskye.com/dev/lightcontrol";
+                                                                               window.URL = "http://localhost";
+                                                                               //window.URL = "http://www.maxskye.com/dev/lightcontrol";
                                                                                //window.URL = "bench.local:9090";
                                                                                
                                                                                function updatesliders(){
@@ -595,6 +670,15 @@
                }
                });
     }
+    function gettzoff() {
+    $.ajax({
+    url : window.URL + "/115",
+    async : false,
+    success : function(data) {
+    $("#tzoff").text(data);
+    }
+    });
+    }
     
     function returnCurrentColorDefault() {
         var defaultcolorString = defaultcolor.split(",");
@@ -717,6 +801,17 @@
                    });
         }
     }
+    function settzoff() {
+    var tzofftxt = $("#tzoffT").val()
+    $("#tzoffT").val("");
+    $.ajax({
+    url: window.URL + "/114," + tzofftxt,
+    async : false,
+    success : function(data) {
+    gettzoff();
+    }
+    })
+    }
     function currentonT() {
         $.ajax({
                url : window.URL + "/101",
@@ -740,10 +835,10 @@
                });
     }
     function saveurl() {
-        var urltxt = ","+"0"+","+"0"+","+"0"+","+$("#urlValue").val();+"\\n"
+    var urltxt = ","+"http://"+$("#urlValue").val();+"\\n"
         if (urltxt != window.URL) {
             $.ajax({
-                   url : window.URL + "http://" + window.URL + "/110"+urltxt,
+                   url : window.URL + "/110"+urltxt,
                    async : false,
                    dataType: "json",
                    success : function(data) {
@@ -758,7 +853,7 @@
     }
     function geturl() {
         $.ajax({
-               url : window.URL + "/" + "111",
+               url : window.URL + "/111",
                async : false,
                dataType : "json",
                success : function(data) {
@@ -921,6 +1016,13 @@
             settimepopcheck();
         }
     }
+    function loadIframe(iframeName, furl) {
+    var $iframe = $('#' + iframeName);
+    if ( $iframe.length ) {
+    $iframe.attr('src',furl);
+    }
+    return false;
+    }
     
     $(window).on("orientationchange",function(){
                  if(window.orientation == 0) // Portrait
@@ -954,11 +1056,12 @@
                                 refreshSwatch();
                                 currentoffT();
                                 currentonT();
-                                //	geturl();
+                                geturl();
                                 updatetime();
                                 updatedate();
                                 updatetemp();
                                 updateram();
+                                gettzoff();
                                 setInterval(updatetemp, 60000);
                                 setInterval(updatedate, 60000);
                                 setInterval(updatetime, 60000);
@@ -966,6 +1069,22 @@
                                 setInterval(getcurrentcolor, 60000);
                                 });
                                 
+                                $("select").change(function () {
+                                var str = "";
+                                $("select option:selected").each(function () {
+                                str += $(this).val() + " ";
+                                });
+                                console.log("selected:" + str);
+                                if (str == 201){
+                                loadIframe('ifrm', '/221.htm');
+                                console.log("iframe url: waveframe");
+                                }
+                                if (str == 202){
+                                loadIframe('ifrm', '/222.htm');
+                                console.log("iframe url: #chaseframe");
+                                }
+                                })
+                                .change();
                                 
                                 $(document).on("pageinit","#pageone",function(){
                                                $("#red").on('slidestop', function(event) {
@@ -974,14 +1093,17 @@
                                                             updatecolor();
                                                             });
                                                $("#green").on('slidestop', function(event) {
+                                                              $.mobile.loading('show');
                                                               refreshSwatch();
                                                               updatecolor();
                                                               });
                                                $("#blue").on('slidestop', function(event) {
+                                                             $.mobile.loading('show');
                                                              refreshSwatch();
                                                              updatecolor();
                                                              });
                                                $("#bright").on('slidestop', function(event) {
+                                                               $.mobile.loading('show');
                                                                window.currentbright = $("#bright").val();
                                                                updatebright();
                                                                });
